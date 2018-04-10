@@ -17,4 +17,4 @@ AllCops:
 Metrics/BlockLength:
   Exclude:
     - 'spec/bitly/client_spec.rb'
-
+    - 'spec/bitly/oauth_spec.rb'

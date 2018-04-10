@@ -11,7 +11,13 @@ require 'bitly3/testing'
 VCR.configure do |c|
   c.configure_rspec_metadata!
 
-  %w[BITLY_CONSUMER_KEY BITLY_CONSUMER_SECRET BITLY_ACCESS_TOKEN].each do |key|
+  %w[
+    BITLY_CONSUMER_KEY
+    BITLY_CONSUMER_SECRET
+    BITLY_ACCESS_TOKEN
+    BITLY_CALLBACK_URL
+    BITLY_AUTH_CODE
+  ].each do |key|
     c.filter_sensitive_data("<<#{key}>>") { ENV.fetch(key) }
   end
 

@@ -16,10 +16,9 @@ module Bitly3
     end
 
     def authorize_url(redirect_url:, state: nil)
-      client(AUTHORIZE_URL).auth_code.authorize_url(
-        redirect_uri: redirect_url,
-        state: state
-      )
+      params = { redirect_uri: redirect_url }
+      params[:state] = state if state
+      client(AUTHORIZE_URL).auth_code.authorize_url(params)
     end
 
     def access_token(code:, redirect_url:)
@@ -33,7 +32,7 @@ module Bitly3
 
     def client(token_url = API_URL)
       ::OAuth2::Client.new(
-        consumer_token,
+        consumer_key,
         consumer_secret,
         site: token_url,
         token_url: '/oauth/access_token'
