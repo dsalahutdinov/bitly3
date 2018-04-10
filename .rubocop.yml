@@ -1,0 +1,20 @@
+AllCops:
+  Include:
+    - 'lib/**/*.rb'
+    - 'lib/**/*.rake'
+    - 'spec/**/*.rb'
+  Exclude:
+    - 'bin/**/*'
+    - 'tmp/**/*'
+    - 'Rakefile'
+    - 'Gemfile'
+    - '*.gemspec'
+    - 'lib/bitly3/testing.rb'
+  DisplayCopNames: true
+  StyleGuideCopsOnly: false
+  TargetRubyVersion: 2.5
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/bitly/client_spec.rb'
+
