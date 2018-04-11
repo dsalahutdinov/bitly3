@@ -4,7 +4,7 @@ require 'bitly3'
 
 module Bitly3
   # Supports stubs for testing
-  class Testing
+  module Testing
     class << self
       attr_accessor :__test_mode
 
@@ -34,32 +34,43 @@ module Bitly3
         self.__test_mode == :fake
       end
     end
-  end
 
-  module ClientFaker
-    def shorten(url)
-      if Bitly3::Testing.fake?
-        OpenStruct.new(url: 'http://bit.ly/bitly3')
+    module Client
+      def shorten(url)
+        if Bitly3::Testing.fake?
+          OpenStruct.new(url: 'http://bit.ly/bitly3')
+        else
+          super
+        end
+      end
+
+      def expand(url)
+        if Bitly3::Testing.fake?
+          OpenStruct.new(long_url: 'https://stackoverflow.com/users')
       else
-        super(url)
+          super
+        end
+      end
+
+      def clicks(url)
+        if Bitly3::Testing.fake?
+          OpenStruct.new(links_click: 2)
+        else
+          super
+        end
       end
     end
 
-    def expand(url)
-      if Bitly3::Testing.fake?
-        OpenStruct.new(long_url: 'https://amplifr.com')
-      else
-        super(url)
-      end
-    end
-
-    def clicks(url)
-      if Bitly3::Testing.fake?
-        OpenStruct.new(links_click: 2)
-      else
-        super(url)
+    module OAuth
+      def access_token(code:, redirect_url:)
+        if Bitly3::Testing.fake?
+          'fake_access_token'
+        else
+          super
+        end
       end
     end
   end
 end
-Bitly3::Client.prepend(Bitly3::ClientFaker)
+Bitly3::Client.prepend(Bitly3::Testing::Client)
+Bitly3::OAuth.prepend(Bitly3::Testing::OAuth)
